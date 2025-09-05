@@ -1,0 +1,12 @@
+{
+  "validUser": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "customerInfo": {
+    "firstName": "Kofi",
+    "lastName": "Peter",
+    "postalCode": "00233"
+  },
+  "confirmationMessage": "THANK YOU FOR YOU ORDER"
+}
