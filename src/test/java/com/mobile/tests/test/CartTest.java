@@ -7,11 +7,14 @@ import com.mobile.tests.pages.ProductsPage;
 import com.mobile.tests.pages.CartPage;
 import com.mobile.tests.utils.TestDataUtils;
 
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
 import java.util.Map;
 
 public class CartTest extends BaseTest {
@@ -29,7 +32,10 @@ public class CartTest extends BaseTest {
         cartPage = new CartPage(driver);
     }
 
-    @Test(description = "Verify adding a single product to the cart")
+    @Test(description = "Verify adding a single product to the cart", groups = {"smoke"})
+    @Story("Add product to cart")
+    @Description("Should add a single product to the cart and verify the cart is not empty.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testAddSingleProductToCart() {
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
         loginPage.login(validUser.get("username"), validUser.get("password"));
@@ -41,8 +47,10 @@ public class CartTest extends BaseTest {
                 "❌ Cart should not be empty after adding a product.");
     }
 
-
-    @Test(description = "Verify removing a product decreases cart size")
+    @Test(description = "Verify removing a product decreases cart size", groups = {"regression"})
+    @Story("Remove product from cart")
+    @Description("Should remove a product from the cart and verify cart size decreases.")
+    @Severity(SeverityLevel.NORMAL)
     public void testRemoveProductFromCart() {
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
         loginPage.login(validUser.get("username"), validUser.get("password"));
@@ -58,7 +66,10 @@ public class CartTest extends BaseTest {
                 "❌ Cart size should decrease after removing an item.");
     }
 
-    @Test(description = "Verify proceeding to checkout navigates to Checkout Information page")
+    @Test(description = "Verify proceeding to checkout navigates to Checkout Information page", groups = {"smoke"})
+    @Story("Proceed to checkout")
+    @Description("Should navigate to Checkout Information page after clicking checkout.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testProceedToCheckout() {
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
         loginPage.login(validUser.get("username"), validUser.get("password"));
@@ -74,8 +85,10 @@ public class CartTest extends BaseTest {
                 "❌ Did not navigate to Checkout Information page after clicking Checkout.");
     }
 
-
-    @Test(description = "Verify empty cart shows correct message")
+    @Test(description = "Verify empty cart shows correct message", groups = {"regression"})
+    @Story("Empty cart message")
+    @Description("Should display correct message when the cart is empty.")
+    @Severity(SeverityLevel.NORMAL)
     public void testEmptyCartMessage() {
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
         loginPage.login(validUser.get("username"), validUser.get("password"));
@@ -87,21 +100,19 @@ public class CartTest extends BaseTest {
                 "❌ Empty cart message not displayed.");
     }
 
-    @Test(description = "Wise failing test: Verify user cannot checkout with an empty cart")
+    @Test(description = "Wise failing test: Verify user cannot checkout with an empty cart", groups = {"regression"})
+    @Story("Cannot checkout empty cart")
+    @Description("Checkout should not proceed when the cart is empty, verifies known bug.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testCannotCheckoutWithEmptyCart() {
-        // Arrange: login as valid user
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
         loginPage.login(validUser.get("username"), validUser.get("password"));
 
-        // Act: go to cart without adding any products
         productsPage.goToCart();
 
-        // Assert: checkout button should be disabled or checkout should not proceed
-        // Currently, the bug allows checkout, so this test will fail
         Assert.assertFalse(cartPage.proceedToCheckout(),
                 "❌ Checkout should NOT be allowed with an empty cart (known bug).");
 
-        // Optional: verify empty cart message is displayed
         String expectedMessage = TestDataUtils.getData(DATA_FILE, "emptyCartMessage");
         Assert.assertEquals(cartPage.isEmptyCartMessageDisplayed(), expectedMessage,
                 "❌ Empty cart message mismatch.");
