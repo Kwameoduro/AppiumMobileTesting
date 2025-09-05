@@ -4,6 +4,10 @@ import com.mobile.tests.base.BaseTest;
 import com.mobile.tests.pages.LoginPage;
 import com.mobile.tests.pages.ProductsPage;
 import com.mobile.tests.utils.TestDataUtils;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -24,8 +28,10 @@ public class LoginTest extends BaseTest {
                 "❌ Login Page was not displayed before starting the test.");
     }
 
-    // -------------------------- Positive Test --------------------------
-    @Test(groups = {"login"}, description = "Verify user can login successfully with valid credentials")
+    @Test(groups = {"smoke", "login"}, description = "Verify user can login successfully with valid credentials")
+    @Story("Login with valid credentials")
+    @Description("User should be able to log in with valid credentials and navigate to the Products page.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testValidLogin() {
         Map<String, String> data = TestDataUtils.getNestedMap(DATA_FILE, "validLogin");
 
@@ -36,36 +42,33 @@ public class LoginTest extends BaseTest {
                 "❌ Products page was NOT displayed after valid login.");
     }
 
-    // -------------------------- Negative Tests --------------------------
-
-    @Test(groups = {"login"}, description = "Verify that an error message is displayed for invalid login attempts")
+    @Test(groups = {"regression", "login"}, description = "Verify that an error message is displayed for invalid login attempts")
+    @Story("Invalid login attempt")
+    @Description("User should see an error message when logging in with invalid credentials.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testInvalidLogin() {
-        // Retrieve test data for invalid login
         Map<String, String> credentials = TestDataUtils.getNestedMap(DATA_FILE, "invalidLogin");
         String username = credentials.get("username");
         String password = credentials.get("password");
         String expectedError = credentials.get("expectedError");
 
-        // Perform login attempt
         loginPage.login(username, password);
 
-        // Wait for the error message to appear (up to 5 seconds)
         String actualError = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(driver -> {
                     String text = loginPage.getErrorMessage().trim();
-                    return text.isEmpty() ? null : text; // Wait until non-empty
+                    return text.isEmpty() ? null : text;
                 });
 
-        // Assert that error message is displayed
         Assert.assertNotNull(actualError, "❌ No error message displayed for invalid login.");
-
-        // Assert that the error message contains expected text (more flexible than exact match)
         Assert.assertTrue(actualError.contains(expectedError),
                 String.format("❌ Invalid login error message mismatch. Expected to contain: '%s', but was: '%s'", expectedError, actualError));
     }
 
-
-    @Test(groups = {"login"}, description = "Verify locked-out user cannot login")
+    @Test(groups = {"regression", "login"}, description = "Verify locked-out user cannot login")
+    @Story("Locked-out user login")
+    @Description("User should not be able to log in if the account is locked out.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testLockedOutUser() {
         Map<String, String> data = TestDataUtils.getNestedMap(DATA_FILE, "lockedOutUser");
 
@@ -77,41 +80,43 @@ public class LoginTest extends BaseTest {
                 "❌ Locked-out user error message mismatch.");
     }
 
-    @Test(groups = {"login"}, description = "Verify login fails when username is empty")
+    @Test(groups = {"regression", "login"}, description = "Verify login fails when username is empty")
+    @Story("Empty username login")
+    @Description("Login should fail and display an error when the username field is empty.")
+    @Severity(SeverityLevel.NORMAL)
     public void testEmptyUsername() {
         Map<String, String> data = TestDataUtils.getNestedMap(DATA_FILE, "emptyUsername");
 
-        // Perform login with empty username
         loginPage.login(data.get("username"), data.get("password"));
 
-        // Retrieve error message from dedicated getter
         String errorMsg = loginPage.getEmptyUsernameError();
 
-        // Assertions
         Assert.assertFalse(errorMsg.isEmpty(), "❌ No error message displayed when username is empty.");
         Assert.assertEquals(errorMsg, data.get("expectedError"),
                 "❌ Empty username error message mismatch.");
     }
 
-    @Test(groups = {"login"}, description = "Verify login fails when password is empty")
+    @Test(groups = {"regression", "login"}, description = "Verify login fails when password is empty")
+    @Story("Empty password login")
+    @Description("Login should fail and display an error when the password field is empty.")
+    @Severity(SeverityLevel.CRITICAL)
     public void testEmptyPassword() {
         Map<String, String> data = TestDataUtils.getNestedMap(DATA_FILE, "emptyPassword");
 
-        // Perform login with empty password
         loginPage.login(data.get("username"), data.get("password"));
 
-        // Retrieve error message using dedicated getter
         String errorMsg = loginPage.getEmptyPasswordError();
 
-        // Assertions
         Assert.assertFalse(errorMsg.isEmpty(), "❌ No error message displayed when password is empty.");
         Assert.assertEquals(errorMsg, data.get("expectedError"),
                 "❌ Empty password error message mismatch.");
     }
 
-    @Test(groups = {"login"}, description = "Verify user can logout successfully after login")
+    @Test(groups = {"smoke", "login"}, description = "Verify user can logout successfully after login")
+    @Story("Logout after login")
+    @Description("User should be able to log out successfully and return to the login page.")
+    @Severity(SeverityLevel.NORMAL)
     public void testLogout() {
-        // First, perform a valid login
         Map<String, String> loginData = TestDataUtils.getNestedMap(DATA_FILE, "validLogin");
         loginPage.login(loginData.get("username"), loginData.get("password"));
 
@@ -119,10 +124,8 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(productsPage.isPageDisplayed(),
                 "❌ Products page was NOT displayed after valid login.");
 
-        // Perform logout
-        productsPage.logout(); // assuming you move the logout() method to ProductsPage
+        productsPage.logout();
 
-        // Verify that login page is displayed again
         Assert.assertTrue(loginPage.isPageDisplayed(),
                 "❌ Login page was NOT displayed after logout.");
     }
