@@ -1,0 +1,17 @@
+{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:deviceName": "emulator-5554",
+  "appium:platformVersion": "11",
+
+  "appium:app": "src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk",
+  "appium:appPackage": "com.swaglabsmobileapp",
+  "appium:appActivity": "com.swaglabsmobileapp.MainActivity",
+  "appium:appWaitActivity": "*",
+
+  "appium:noReset": false,
+  "appium:fullReset": true,
+
+  "appium:newCommandTimeout": 60000,
+  "appium:uiautomator2ServerLaunchTimeout": 60000
+}
