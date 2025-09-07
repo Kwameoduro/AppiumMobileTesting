@@ -14,13 +14,13 @@ public class AppiumServerManager {
         // Prevent instantiation
     }
 
-    /**
-     * Start the Appium server
-     */
+
+     // Start the Appium server
+
     public static void startServer() {
         if (service == null || !service.isRunning()) {
             try {
-                // ✅ Load values from config.properties (with fallbacks)
+                // Load values from config.properties (with fallbacks)
                 String ip = ConfigReader.getProperty("appiumServerIP");
                 int port = Integer.parseInt(ConfigReader.getProperty("appiumServerPort"));
                 String logPath = ConfigReader.getProperty("appiumLogFile");
@@ -33,30 +33,30 @@ public class AppiumServerManager {
                 service = AppiumDriverLocalService.buildService(builder);
                 service.start();
 
-                System.out.println("✅ Appium server started on: " + service.getUrl());
+                System.out.println("Appium server started on: " + service.getUrl());
 
             } catch (Exception e) {
-                throw new RuntimeException("❌ Failed to start Appium server", e);
+                throw new RuntimeException("Failed to start Appium server", e);
             }
         }
     }
 
-    /**
-     * Stop the Appium server
-     */
+
+      // Stop the Appium server
+
     public static void stopServer() {
         if (service != null && service.isRunning()) {
             service.stop();
-            System.out.println("✅ Appium server stopped.");
+            System.out.println("Appium server stopped.");
         }
     }
 
-    /**
-     * Get Appium server URL
-     */
+
+      // Get Appium server URL
+
     public static String getServerUrl() {
         if (service == null || !service.isRunning()) {
-            throw new IllegalStateException("❌ Appium server is not running!");
+            throw new IllegalStateException("Appium server is not running!");
         }
         return service.getUrl().toString();
     }
