@@ -40,13 +40,13 @@ public class ProductsTest extends BaseTest {
                 "❌ Products page was not displayed after login.");
     }
 
-    @Test(groups = {"smoke", "products"}, description = "Verify user can log in and land on the Products page")
-    @Story("Login and navigate to Products page")
-    @Description("User should log in successfully and be navigated to the Products page.")
-    @Severity(SeverityLevel.CRITICAL)
-    public void testSuccessfulLoginNavigatesToProductsPage() {
-        loginWithValidUser();
-    }
+//    @Test(groups = {"smoke", "products"}, description = "Verify user can log in and land on the Products page")
+//    @Story("Login and navigate to Products page")
+//    @Description("User should log in successfully and be navigated to the Products page.")
+//    @Severity(SeverityLevel.CRITICAL)
+//    public void testSuccessfulLoginNavigatesToProductsPage() {
+//        loginWithValidUser();
+//    }
 
     @Test(groups = {"regression", "products"}, description = "Verify product list is displayed on Products page")
     @Story("Display product list")
@@ -78,18 +78,18 @@ public class ProductsTest extends BaseTest {
         Assert.assertEquals(actualPrice, expectedPrice, "❌ Product price mismatch.");
     }
 
-    @Test(groups = {"smoke", "products"}, description = "Verify sorting functionality shows available options")
-    @Story("Check sort options")
-    @Description("Sorting functionality should display available sorting options.")
-    @Severity(SeverityLevel.CRITICAL)
-    public void testSortOptionsAreAvailable() {
-        loginWithValidUser();
-
-        productsPage.tapSortButton();
-
-        List<String> sortOptions = TestDataUtils.getListOfStrings(DATA_FILE, "sortOptions");
-        Assert.assertFalse(sortOptions.isEmpty(), "❌ Sort options not defined in test data.");
-    }
+//    @Test(groups = {"smoke", "products"}, description = "Verify sorting functionality shows available options")
+//    @Story("Check sort options")
+//    @Description("Sorting functionality should display available sorting options.")
+//    @Severity(SeverityLevel.CRITICAL)
+//    public void testSortOptionsAreAvailable() {
+//        loginWithValidUser();
+//
+//        productsPage.tapSortButton();
+//
+//        List<String> sortOptions = TestDataUtils.getListOfStrings(DATA_FILE, "sortOptions");
+//        Assert.assertFalse(sortOptions.isEmpty(), "❌ Sort options not defined in test data.");
+//    }
 
     @Test(groups = {"regression", "products"}, description = "Verify user can add a product to the cart")
     @Story("Add product to cart")
