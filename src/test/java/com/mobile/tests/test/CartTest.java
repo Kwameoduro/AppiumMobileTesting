@@ -100,7 +100,7 @@ public class CartTest extends BaseTest {
                 "❌ Empty cart message not displayed.");
     }
 
-    @Test(description = "Wise failing test: Verify user cannot checkout with an empty cart", groups = {"regression"})
+    @Test(description = "Verify user cannot checkout with an empty cart", groups = {"regression"})
     @Story("Cannot checkout empty cart")
     @Description("Checkout should not proceed when the cart is empty, verifies known bug.")
     @Severity(SeverityLevel.CRITICAL)
