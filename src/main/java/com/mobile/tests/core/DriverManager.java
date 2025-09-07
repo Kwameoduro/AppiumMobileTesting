@@ -18,15 +18,15 @@ public class DriverManager {
         // Prevent instantiation
     }
 
-    /**
-     * Initialize Appium Driver
-     */
+
+     // Initialize Appium Driver
+
     public static void initDriver() {
         if (driver.get() == null) {
             try {
                 String serverURL;
 
-                // ✅ Get server URL either from AppiumServerManager or config.properties
+                // Get server URL either from AppiumServerManager or config.properties
                 boolean startAppium = Boolean.parseBoolean(ConfigReader.getProperty("startAppiumServer"));
                 if (startAppium) {
                     AppiumServerManager.startServer();
@@ -35,33 +35,33 @@ public class DriverManager {
                     serverURL = ConfigReader.getProperty("appiumServerURL");
                 }
 
-                // ✅ Load capabilities from CapabilitiesReader
+                // Load capabilities from CapabilitiesReader
                 Map<String, Object> capabilitiesMap = CapabilitiesReader.getCapabilities();
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilitiesMap.forEach(capabilities::setCapability);
 
-                // ✅ Create Appium Driver
+                // Create Appium Driver
                 AppiumDriver appiumDriver = new AppiumDriver(new URL(serverURL), capabilities);
 
-                // ✅ Configure implicit wait from config.properties
+                // Configure implicit wait from config.properties
                 int implicitWait = Integer.parseInt(ConfigReader.getProperty("implicitWait"));
                 appiumDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
 
                 driver.set(appiumDriver);
 
-                System.out.println("✅ Appium driver started successfully with capabilities: " + capabilitiesMap);
+                System.out.println("Appium driver started successfully with capabilities: " + capabilitiesMap);
 
             } catch (MalformedURLException e) {
-                throw new RuntimeException("❌ Invalid Appium server URL. Check config.properties", e);
+                throw new RuntimeException("Invalid Appium server URL. Check config.properties", e);
             } catch (Exception e) {
-                throw new RuntimeException("❌ Failed to initialize Appium driver", e);
+                throw new RuntimeException("Failed to initialize Appium driver", e);
             }
         }
     }
 
-    /**
-     * Get current Appium driver
-     */
+
+     // Get current Appium driver
+
     public static AppiumDriver getDriver() {
         if (driver.get() == null) {
             throw new IllegalStateException("Driver not initialized. Call initDriver() first.");
@@ -69,9 +69,9 @@ public class DriverManager {
         return driver.get();
     }
 
-    /**
-     * Quit driver and cleanup
-     */
+
+     // Quit driver and cleanup
+
     public static void quitDriver() {
         if (driver.get() != null) {
             driver.get().quit();
@@ -80,7 +80,7 @@ public class DriverManager {
             if (startAppium) {
                 AppiumServerManager.stopServer();
             }
-            System.out.println("✅ Appium driver stopped successfully");
+            System.out.println("Appium driver stopped successfully");
         }
     }
 }
