@@ -1,7 +1,7 @@
 # Mobile Test Automation with Appium
 
-This project is a **mobile automation testing framework** built with:
-- **Java + TestNG + Maven**
+This project is a mobile automation testing framework built with:
+- **Java , TestNG and Maven**
 - **Appium 2.x**
 - **Allure Reports** for reporting
 - **Slack/Email** for test run notification
