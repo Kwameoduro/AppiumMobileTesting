@@ -20,42 +20,37 @@ public class CartPage extends BasePage {
     private final By checkoutBtn   = AppiumBy.xpath("//android.view.ViewGroup[@content-desc=\"test-CHECKOUT\"]");
     private final By emptyCartMessage = AppiumBy.xpath("//android.view.ViewGroup[@content-desc='test-Cart']/android.view.ViewGroup/android.widget.ImageView");
 
-    // ✅ Proper constructor with driver injection
+    // Proper constructor with driver injection
     public CartPage(AppiumDriver driver) {
         super(driver);
     }
 
-    /**
-     * Verify that Cart page is displayed
-     */
+     // Verify that Cart page is displayed
+
     public boolean isCartPageDisplayed() {
         return isDisplayed(cartTitle);
     }
 
-    /**
-     * Get list of items in the cart
-     */
+     // Get the list of items in the cart
+
     public List<WebElement> getCartItems() {
         return driver.findElements(cartItems);
     }
 
-    /**
-     * Get item names from cart
-     */
+    // Get item names from cart
+
     public List<WebElement> getItemNames() {
         return driver.findElements(itemNames);
     }
 
-    /**
-     * Get item prices from cart
-     */
+    // Get item prices from cart
+
     public List<WebElement> getItemPrices() {
         return driver.findElements(itemPrices);
     }
 
-    /**
-     * Remove first item in cart
-     */
+    // Remove the first item in cart
+
     public void removeFirstItem() {
         List<WebElement> buttons = driver.findElements(removeButtons);
         if (!buttons.isEmpty()) {
@@ -63,18 +58,14 @@ public class CartPage extends BasePage {
         }
     }
 
-    /**
-     * Continue shopping
-     */
+    // Continue shopping
+
     public void continueShopping() {
         click(continueBtn);
     }
 
-    /**
-     * Proceed to checkout
-     *
-     * @return
-     */
+    // Proceed to checkout
+
     public boolean proceedToCheckout() {
         click(checkoutBtn);
         return false;
