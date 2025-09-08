@@ -16,23 +16,20 @@ public class CheckoutCompletePage extends BasePage {
         super(driver);
     }
 
-    /**
-     * Verify that Checkout Complete page is displayed.
-     */
+    // Verify that Checkout Complete page is displayed.
+
     public boolean isPageDisplayed() {
         return isDisplayed(completeTitle);
     }
 
-    /**
-     * Get confirmation (thank you) message.
-     */
+    // Get confirmation (thank you) message.
+
     public String getConfirmationMessage() {
         return getText(thankYouMsg);
     }
 
-    /**
-     * Tap on Back Home button and return to Products page.
-     */
+    // Tap on Back Home button and return to Products page.
+
     public ProductsPage tapBackHome() {
         click(backHomeBtn);
         return new ProductsPage(driver);
