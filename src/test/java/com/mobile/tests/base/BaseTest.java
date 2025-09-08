@@ -55,9 +55,9 @@ public abstract class BaseTest {
         }
     }
 
-    /**
-     * Capture screenshot and save it under /screenshots/[TestClass] folder
-     */
+
+      // Capture screenshot and save it under /screenshots/[TestClass] folder
+
     private void takeScreenshot(String testName, String className) {
         if (driver == null) return;
 
