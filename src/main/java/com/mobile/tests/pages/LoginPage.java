@@ -36,28 +36,28 @@ public class LoginPage extends BasePage {
             AppiumBy.id("com.swaglabsmobileapp:id/errorMessage") // native Android fallback
     };
 
-    // ✅ Constructor: inject AppiumDriver into BasePage
+    // Constructor: inject AppiumDriver into BasePage
     public LoginPage(AppiumDriver driver) {
         super(driver);
     }
 
-    /**
-     * Enter username
-     */
+
+      // Enter username
+
     public void enterUsername(String username) {
         type(usernameField, username);
     }
 
-    /**
-     * Enter password
-     */
+
+    // Enter password
+
     public void enterPassword(String password) {
         type(passwordField, password);
     }
 
-    /**
-     * Tap on login button
-     */
+
+    // Tap on the login button
+
     public void tapLogin() {
         click(loginButton);
     }
@@ -66,31 +66,31 @@ public class LoginPage extends BasePage {
         return isDisplayed(loginTitle);
     }
 
-    /**
-     * Perform login action
-     */
+
+    // Perform login action
+
     public void login(String username, String password) {
         enterUsername(username);
         enterPassword(password);
         tapLogin();
     }
 
-    /**
-     * Get error message text (tries multiple locators for robustness)
-     */
+
+    // Get error message text (tries multiple locators for robustness)
+
     public String getErrorMessage() {
         for (By locator : errorLocators) {
             if (isDisplayed(locator)) {
                 return getText(locator);
             }
         }
-        System.err.println("⚠️ No error message found on LoginPage.");
+        System.err.println(" No error message found on LoginPage.");
         return "";
     }
 
-    /**
-     * Check if login page is displayed
-     */
+
+     // Check if the login page is displayed
+
     public boolean isLoginPageDisplayed() {
         return isDisplayed(usernameField);
     }
@@ -104,7 +104,8 @@ public class LoginPage extends BasePage {
                         return el.isDisplayed() ? el.getText().trim() : null;
                     });
         } catch (TimeoutException e) {
-            return ""; // Return empty string if error message never appears
+            return "";
+            // Return empty string if the error message never appears
         }
 
 
@@ -119,16 +120,18 @@ public class LoginPage extends BasePage {
                         return el.isDisplayed() ? el.getText().trim() : null;
                     });
         } catch (TimeoutException e) {
-            return ""; // Return empty string if error message never appears
+            return "";
+            // Return empty string if the error message never appears
         }
     }
 
-    /** Clicks the menu and logs out */
+    // Clicks the menu and logs out
+
     public void logout() {
         // Click menu button
         driver.findElement(menuButton).click();
 
-        // Wait until logout button is visible, then click it
+        // Wait until the logout button is visible, then click it
         WebElement logoutBtn = new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(logoutButton));
 
@@ -136,7 +139,7 @@ public class LoginPage extends BasePage {
     }
 
 
-    /** Optionally, verify logout success by checking login page element */
+    // Optionally, verify logout success by checking login page element
     public boolean isLoggedOut() {
         try {
             // Assuming the login button is a reliable login page indicator
