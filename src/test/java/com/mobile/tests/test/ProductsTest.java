@@ -28,25 +28,18 @@ public class ProductsTest extends BaseTest {
         productsPage = new ProductsPage(driver);
     }
 
-    /**
-     * Helper: log in with valid user from test data
-     */
+
+     // Helper: log in with valid user from test data
+
     private void loginWithValidUser() {
         Map<String, String> validUser = TestDataUtils.getNestedMap(DATA_FILE, "validUser");
-        Assert.assertNotNull(validUser, "❌ 'validUser' not found in " + DATA_FILE);
+        Assert.assertNotNull(validUser, " 'validUser' not found in " + DATA_FILE);
 
         loginPage.login(validUser.get("username"), validUser.get("password"));
         Assert.assertTrue(productsPage.isPageDisplayed(),
-                "❌ Products page was not displayed after login.");
+                " Products page was not displayed after login.");
     }
 
-//    @Test(groups = {"smoke", "products"}, description = "Verify user can log in and land on the Products page")
-//    @Story("Login and navigate to Products page")
-//    @Description("User should log in successfully and be navigated to the Products page.")
-//    @Severity(SeverityLevel.CRITICAL)
-//    public void testSuccessfulLoginNavigatesToProductsPage() {
-//        loginWithValidUser();
-//    }
 
     @Test(groups = {"regression", "products"}, description = "Verify product list is displayed on Products page")
     @Story("Display product list")
@@ -55,7 +48,7 @@ public class ProductsTest extends BaseTest {
     public void testProductListIsDisplayed() {
         loginWithValidUser();
         List<String> productNames = productsPage.getAllProductNames();
-        Assert.assertFalse(productNames.isEmpty(), "❌ No products found on the Products page.");
+        Assert.assertFalse(productNames.isEmpty(), " No products found on the Products page.");
     }
 
     @Test(groups = {"regression", "products"}, description = "Verify first product name and price match expected values")
@@ -66,7 +59,7 @@ public class ProductsTest extends BaseTest {
         loginWithValidUser();
 
         List<Map<String, String>> products = TestDataUtils.getListOfMaps(DATA_FILE, "products");
-        Assert.assertFalse(products.isEmpty(), "❌ 'products' list is empty in test data.");
+        Assert.assertFalse(products.isEmpty(), " 'products' list is empty in test data.");
 
         String expectedName = products.get(0).get("name");
         String expectedPrice = products.get(0).get("price");
@@ -74,22 +67,10 @@ public class ProductsTest extends BaseTest {
         String actualName = productsPage.getAllProductNames().get(0);
         String actualPrice = productsPage.getAllProductPrices().get(0);
 
-        Assert.assertEquals(actualName, expectedName, "❌ Product name mismatch.");
-        Assert.assertEquals(actualPrice, expectedPrice, "❌ Product price mismatch.");
+        Assert.assertEquals(actualName, expectedName, " Product name mismatch.");
+        Assert.assertEquals(actualPrice, expectedPrice, " Product price mismatch.");
     }
 
-//    @Test(groups = {"smoke", "products"}, description = "Verify sorting functionality shows available options")
-//    @Story("Check sort options")
-//    @Description("Sorting functionality should display available sorting options.")
-//    @Severity(SeverityLevel.CRITICAL)
-//    public void testSortOptionsAreAvailable() {
-//        loginWithValidUser();
-//
-//        productsPage.tapSortButton();
-//
-//        List<String> sortOptions = TestDataUtils.getListOfStrings(DATA_FILE, "sortOptions");
-//        Assert.assertFalse(sortOptions.isEmpty(), "❌ Sort options not defined in test data.");
-//    }
 
     @Test(groups = {"regression", "products"}, description = "Verify user can add a product to the cart")
     @Story("Add product to cart")
@@ -102,6 +83,6 @@ public class ProductsTest extends BaseTest {
         productsPage.goToCart();
 
         // Placeholder: replace with CartPage validation later
-        Assert.assertTrue(true, "✅ Navigation to cart performed after adding product.");
+        Assert.assertTrue(true, " Navigation to cart performed after adding product.");
     }
 }
