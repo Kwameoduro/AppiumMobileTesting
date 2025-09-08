@@ -24,55 +24,51 @@ public class CheckoutOverviewPage extends BasePage {
         super(driver);
     }
 
-    /**
-     * Verify that Checkout Overview page is displayed.
-     */
+
+    // Verify that Checkout Overview page is displayed.
+
     public boolean isPageDisplayed() {
         return isDisplayed(overviewTitle);
     }
 
-    /**
-     * Get all item names listed in overview.
-     */
+
+    // Get all item names listed in overview.
+
     public List<WebElement> getOverviewItems() {
         return driver.findElements(itemNames);
     }
 
-    /**
-     * Get all item prices listed in overview.
-     */
+
+    // Get all item prices listed in overview.
+
     public List<WebElement> getItemPrices() {
         return driver.findElements(itemPrices);
     }
 
-    /**
-     * Get subtotal text.
-     */
+
+     // Get subtotal text.
+
     public String getSubtotal() {
         return getText(subtotalLabel);
     }
 
-    /**
-     * Get tax text.
-     */
+
+    // Get tax text.
+
     public String getTax() {
         return getText(taxLabel);
     }
 
-    /**
-     * Get total text.
-     */
+
+    // Get total text.
+
     public String getTotal() {
         return getText(totalLabel);
     }
 
-    /**
-     * Finish checkout and navigate to Checkout Complete page.
-     */
-//    public void finishCheckout() {
-//        click(finishBtn);
-//        new CheckoutCompletePage(driver);
-//    }
+
+    // Finish checkout and navigate to Checkout Complete page.
+
     public void finishCheckout() {
         driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiScrollable(new UiSelector().scrollable(true))" +
@@ -83,9 +79,9 @@ public class CheckoutOverviewPage extends BasePage {
         new CheckoutCompletePage(driver);
     }
 
-    /**
-     * Cancel checkout and navigate back to Cart page.
-     */
+
+    // Cancel checkout and navigate back to Cart page.
+
     public CartPage cancelCheckout() {
         click(cancelBtn);
         return new CartPage(driver);
