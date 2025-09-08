@@ -55,12 +55,12 @@ public class CheckoutTest extends BaseTest {
         productsPage.addFirstProductToCart();
         productsPage.goToCart();
         Assert.assertFalse(cartPage.getCartItems().isEmpty(),
-                "❌ Cart should contain at least one product before checkout.");
+                " Cart should contain at least one product before checkout.");
 
         // Step 3: Proceed to Checkout Information
         cartPage.proceedToCheckout();
         Assert.assertTrue(checkoutInformationPage.isPageDisplayed(),
-                "❌ Checkout Information page not displayed.");
+                " Checkout Information page not displayed.");
 
         // Step 4: Fill in customer info
         Map<String, String> customerInfo = TestDataUtils.getNestedMap(DATA_FILE, "customerInfo");
@@ -71,24 +71,21 @@ public class CheckoutTest extends BaseTest {
 
         // Step 5: Verify Overview Page
         Assert.assertTrue(checkoutOverviewPage.isPageDisplayed(),
-                "❌ Checkout Overview page not displayed.");
+                " Checkout Overview page not displayed.");
 
         List<WebElement> overviewItems = checkoutOverviewPage.getOverviewItems();
-        // Optional check: Uncomment if you want to verify overview items
-        // Assert.assertFalse(overviewItems.isEmpty(),
-        //        "❌ No items displayed in checkout overview.");
 
         // Step 6: Finish Checkout
         checkoutOverviewPage.finishCheckout();
 
         // Step 7: Verify Checkout Complete Page
         Assert.assertTrue(checkoutCompletePage.isPageDisplayed(),
-                "❌ Checkout Complete page not displayed.");
+                "Checkout Complete page not displayed.");
 
         // Step 8: Verify Order Confirmation
         String expectedMessage = TestDataUtils.getData(DATA_FILE, "confirmationMessage");
         String actualMessage = checkoutCompletePage.getConfirmationMessage();
         Assert.assertEquals(actualMessage, expectedMessage,
-                "❌ Confirmation message mismatch.");
+                "Confirmation message mismatch.");
     }
 }
