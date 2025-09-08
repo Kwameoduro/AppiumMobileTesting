@@ -20,62 +20,54 @@ public class CheckoutInformationPage extends BasePage {
         super(driver);
     }
 
-    /**
-     * Verify that Checkout Information page is displayed.
-     */
+     // Verify that Checkout Information page is displayed.
+
     public boolean isPageDisplayed() {
         return isDisplayed(checkoutTitle);
     }
 
-    /**
-     * Enter first name.
-     */
+     // Enter first name.
+
     public void enterFirstName(String firstName) {
         type(firstNameField, firstName);
     }
 
-    /**
-     * Enter last name.
-     */
+    // Enter last name.
+
     public void enterLastName(String lastName) {
         type(lastNameField, lastName);
     }
 
-    /**
-     * Enter postal code.
-     */
+     // Enter the postal code.
+
     public void enterPostalCode(String postalCode) {
         type(postalCodeField, postalCode);
     }
 
-    /**
-     * Fill in checkout form.
-     */
+    // Fill in the checkout form.
+
     public void fillCheckoutInformation(String firstName, String lastName, String postalCode) {
         enterFirstName(firstName);
         enterLastName(lastName);
         enterPostalCode(postalCode);
     }
 
-    /**
-     * Tap Continue button and navigate to Overview Page.
-     */
+    // Tap the 'continue' button and navigate to the Overview Page.
+
     public void continueToOverview() {
         click(continueBtn);
         new CheckoutOverviewPage(driver);
     }
 
-    /**
-     * Tap Cancel button (navigates back to cart).
-     */
+    // Tap Cancel button (navigates back to cart).
+
     public CartPage tapCancel() {
         click(cancelBtn);
         return new CartPage(driver);
     }
 
-    /**
-     * Get error message if validation fails.
-     */
+    // Get the error message if validation fails.
+
     public String getErrorMessage() {
         return getText(errorMessage);
     }
