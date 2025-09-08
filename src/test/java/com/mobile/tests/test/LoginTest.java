@@ -25,7 +25,7 @@ public class LoginTest extends BaseTest {
     public void initPages() {
         loginPage = new LoginPage(driver);
         Assert.assertTrue(loginPage.isLoginPageDisplayed(),
-                "❌ Login Page was not displayed before starting the test.");
+                " Login Page was not displayed before starting the test.");
     }
 
     @Test(groups = {"smoke", "login"}, description = "Verify user can login successfully with valid credentials")
@@ -39,7 +39,7 @@ public class LoginTest extends BaseTest {
 
         ProductsPage productsPage = new ProductsPage(driver);
         Assert.assertTrue(productsPage.isPageDisplayed(),
-                "❌ Products page was NOT displayed after valid login.");
+                " Products page was NOT displayed after valid login.");
     }
 
     @Test(groups = {"regression", "login"}, description = "Verify that an error message is displayed for invalid login attempts")
@@ -60,9 +60,9 @@ public class LoginTest extends BaseTest {
                     return text.isEmpty() ? null : text;
                 });
 
-        Assert.assertNotNull(actualError, "❌ No error message displayed for invalid login.");
+        Assert.assertNotNull(actualError, " No error message displayed for invalid login.");
         Assert.assertTrue(actualError.contains(expectedError),
-                String.format("❌ Invalid login error message mismatch. Expected to contain: '%s', but was: '%s'", expectedError, actualError));
+                String.format(" Invalid login error message mismatch. Expected to contain: '%s', but was: '%s'", expectedError, actualError));
     }
 
     @Test(groups = {"regression", "login"}, description = "Verify locked-out user cannot login")
@@ -75,9 +75,9 @@ public class LoginTest extends BaseTest {
         loginPage.login(data.get("username"), data.get("password"));
 
         String errorMsg = loginPage.getErrorMessage().trim();
-        Assert.assertFalse(errorMsg.isEmpty(), "❌ No error message displayed for locked-out user.");
+        Assert.assertFalse(errorMsg.isEmpty(), " No error message displayed for locked-out user.");
         Assert.assertEquals(errorMsg, data.get("expectedError"),
-                "❌ Locked-out user error message mismatch.");
+                " Locked-out user error message mismatch.");
     }
 
     @Test(groups = {"regression", "login"}, description = "Verify login fails when username is empty")
@@ -91,9 +91,9 @@ public class LoginTest extends BaseTest {
 
         String errorMsg = loginPage.getEmptyUsernameError();
 
-        Assert.assertFalse(errorMsg.isEmpty(), "❌ No error message displayed when username is empty.");
+        Assert.assertFalse(errorMsg.isEmpty(), " No error message displayed when username is empty.");
         Assert.assertEquals(errorMsg, data.get("expectedError"),
-                "❌ Empty username error message mismatch.");
+                " Empty username error message mismatch.");
     }
 
     @Test(groups = {"regression", "login"}, description = "Verify login fails when password is empty")
@@ -107,9 +107,9 @@ public class LoginTest extends BaseTest {
 
         String errorMsg = loginPage.getEmptyPasswordError();
 
-        Assert.assertFalse(errorMsg.isEmpty(), "❌ No error message displayed when password is empty.");
+        Assert.assertFalse(errorMsg.isEmpty(), " No error message displayed when password is empty.");
         Assert.assertEquals(errorMsg, data.get("expectedError"),
-                "❌ Empty password error message mismatch.");
+                " Empty password error message mismatch.");
     }
 
     @Test(groups = {"smoke", "login"}, description = "Verify user can logout successfully after login")
@@ -122,11 +122,11 @@ public class LoginTest extends BaseTest {
 
         ProductsPage productsPage = new ProductsPage(driver);
         Assert.assertTrue(productsPage.isPageDisplayed(),
-                "❌ Products page was NOT displayed after valid login.");
+                " Products page was NOT displayed after valid login.");
 
         productsPage.logout();
 
         Assert.assertTrue(loginPage.isPageDisplayed(),
-                "❌ Login page was NOT displayed after logout.");
+                " Login page was NOT displayed after logout.");
     }
 }
