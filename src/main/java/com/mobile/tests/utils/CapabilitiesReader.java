@@ -21,7 +21,7 @@ public class CapabilitiesReader {
         try {
             Map<String, Object> capabilitiesMap = mapper.readValue(new File(CAPABILITIES_PATH), Map.class);
 
-            // ✅ Resolve relative app path into absolute path
+            // Resolve the relative app path into an absolute path
             if (capabilitiesMap.containsKey("appium:app")) {
                 String appPath = (String) capabilitiesMap.get("appium:app");
                 File appFile = new File(appPath);
@@ -31,18 +31,18 @@ public class CapabilitiesReader {
                 }
 
                 if (!appFile.exists()) {
-                    throw new RuntimeException("❌ App file not found at: " + appFile.getAbsolutePath());
+                    throw new RuntimeException(" App file not found at: " + appFile.getAbsolutePath());
                 }
 
                 capabilitiesMap.put("appium:app", appFile.getAbsolutePath());
             }
 
-            System.out.println("✅ Loaded capabilities: " + capabilitiesMap);
+            System.out.println(" Loaded capabilities: " + capabilitiesMap);
 
             return new HashMap<>(capabilitiesMap);
 
         } catch (IOException e) {
-            throw new RuntimeException("❌ Failed to load capabilities.json from path: " + CAPABILITIES_PATH, e);
+            throw new RuntimeException(" Failed to load capabilities.json from path: " + CAPABILITIES_PATH, e);
         }
     }
 }
