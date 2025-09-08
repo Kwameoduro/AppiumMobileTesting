@@ -44,7 +44,7 @@ public class CartTest extends BaseTest {
         productsPage.goToCart();
 
         Assert.assertFalse(cartPage.getCartItems().isEmpty(),
-                "❌ Cart should not be empty after adding a product.");
+                " Cart should not be empty after adding a product.");
     }
 
     @Test(description = "Verify removing a product decreases cart size", groups = {"regression"})
@@ -63,7 +63,7 @@ public class CartTest extends BaseTest {
         int newSize = cartPage.getCartItems().size();
 
         Assert.assertTrue(newSize < initialSize,
-                "❌ Cart size should decrease after removing an item.");
+                " Cart size should decrease after removing an item.");
     }
 
     @Test(description = "Verify proceeding to checkout navigates to Checkout Information page", groups = {"smoke"})
@@ -82,7 +82,7 @@ public class CartTest extends BaseTest {
 
         CheckoutInformationPage checkoutPage = new CheckoutInformationPage(driver);
         Assert.assertTrue(checkoutPage.isPageDisplayed(),
-                "❌ Did not navigate to Checkout Information page after clicking Checkout.");
+                " Did not navigate to Checkout Information page after clicking Checkout.");
     }
 
     @Test(description = "Verify empty cart shows correct message", groups = {"regression"})
@@ -97,7 +97,7 @@ public class CartTest extends BaseTest {
         CartPage cartPage = new CartPage(driver);
 
         Assert.assertTrue(cartPage.isEmptyCartMessageDisplayed(),
-                "❌ Empty cart message not displayed.");
+                " Empty cart message not displayed.");
     }
 
     @Test(description = "Verify user cannot checkout with an empty cart", groups = {"regression"})
@@ -111,10 +111,10 @@ public class CartTest extends BaseTest {
         productsPage.goToCart();
 
         Assert.assertFalse(cartPage.proceedToCheckout(),
-                "❌ Checkout should NOT be allowed with an empty cart (known bug).");
+                " Checkout should NOT be allowed with an empty cart (known bug).");
 
         String expectedMessage = TestDataUtils.getData(DATA_FILE, "emptyCartMessage");
         Assert.assertEquals(cartPage.isEmptyCartMessageDisplayed(), expectedMessage,
-                "❌ Empty cart message mismatch.");
+                " Empty cart message mismatch.");
     }
 }
