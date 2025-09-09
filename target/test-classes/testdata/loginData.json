@@ -1,0 +1,26 @@
+{
+  "validLogin": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "invalidLogin": {
+    "username": "invalid_user",
+    "password": "wrong_password",
+    "expectedError": "Username and password do not match"
+  },
+  "lockedOutUser": {
+    "username": "locked_out_user",
+    "password": "secret_sauce",
+    "expectedError": "Sorry, this user has been locked out."
+  },
+  "emptyUsername": {
+    "username": "",
+    "password": "secret_sauce",
+    "expectedError": "Username is required"
+  },
+  "emptyPassword": {
+    "username": "standard_user",
+    "password": "",
+    "expectedError": "Password is required"
+  }
+}

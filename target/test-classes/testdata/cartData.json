@@ -1,0 +1,19 @@
+{
+  "validUser": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "productsToAdd": [
+    { "name": "Sauce Labs Backpack", "price": "$29.99" },
+    { "name": "Sauce Labs Bike Light", "price": "$9.99" }
+  ],
+  "removeScenario": {
+    "removeItemName": "Sauce Labs Bike Light"
+  },
+  "checkoutInfo": {
+    "firstName": "Kofi",
+    "lastName": "Peter",
+    "postalCode": "00233"
+  },
+  "emptyCartMessage": "No items in your cart"
+}
