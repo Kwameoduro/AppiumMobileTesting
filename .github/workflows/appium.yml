@@ -1,161 +1,161 @@
-name: Mobile Testing With Appium and Allure
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  APP_PATH: ./src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
-  DEVICE_NAME: Pixel 5
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: 21
-          distribution: temurin
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install Appium and Allure
-        run: |
-          npm install -g appium@2.0.0 appium-doctor allure-commandline --save-dev
-          appium driver install uiautomator2
-
-      #  Step 1: Boot emulator and keep it alive
-      - name: Start Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          force-avd-creation: true
-          disable-animations: false  # ← CHANGED: Let the script handle animations
-          emulator-boot-timeout: 900
-          emulator-options: -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -no-window
-          script: |
-            # Wait for emulator to be fully ready
-            sleep 15
-      #            # Manually disable animations with retries
-      #            for i in $(seq 1 3); do
-      #              adb shell settings put global window_animation_scale 0.0 && \
-      #              adb shell settings put global transition_animation_scale 0.0 && \
-      #              adb shell settings put global animator_duration_scale 0.0 && break
-      #              sleep 5
-      #            done
-      #            echo "Emulator started and will stay alive"
-
-      #  Step 2: Run Appium tests while emulator is alive
-      - name: Run Appium tests
-        run: |
-          echo ">>> Installing netcat for port checks..."
-          sudo apt-get update && sudo apt-get install -y netcat-openbsd
-
-          echo ">>> Starting Appium server..."
-          appium -p 4723 --base-path /wd/hub > appium.log 2>&1 &
-          APPIUM_PID=$!
-
-          echo ">>> Waiting for Appium server..."
-          TIMEOUT=60
-          while ! nc -z localhost 4723; do
-            echo "Appium not ready yet..."
-            sleep 1
-            TIMEOUT=$((TIMEOUT - 1))
-            if [ $TIMEOUT -le 0 ]; then
-              echo "Appium did not start!"
-              kill $APPIUM_PID || true
-              exit 1
-            fi
-          done
-
-          echo ">>> Appium is ready, checking connected devices..."
-          adb devices
-
-          echo ">>> Running Maven tests..."
-          mkdir -p allure-results target/surefire-reports
-
-          mvn clean test -Dsurefire.suiteXmlFiles=testng.xml || TEST_FAILED=true
-
-          echo ">>> Maven tests completed, shutting down Appium..."
-          kill $APPIUM_PID || true
-
-          if [ "$TEST_FAILED" = true ]; then
-            echo ">>> Tests failed, showing surefire reports..."
-            ls -R target/surefire-reports || true
-            exit 1
-          fi
-
-      - name: Upload Allure results as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
-
-      - name: Upload JUnit reports as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: junit-reports
-          path: target/surefire-reports
-
-  deploy-allure-report:
-    needs: test
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download Allure results
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results
-
-      - name: Install Allure CLI
-        run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
-          tar -xzf allure-2.27.0.tgz
-          sudo mv allure-2.27.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
-
-      - name: Generate Allure report
-        run: |
-          allure generate allure-results --clean -o allure-report
-
-      - name: Deploy Allure report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report
-          publish_branch: gh-pages
-          force_orphan: true
-
-  notify-slack:
-    needs: [ test, deploy-allure-report ]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Send Slack notification
-        run: |
-          STATUS="${{ needs.test.result }}"
-          EMOJI="❌"
-          if [ "$STATUS" = "success" ]; then
-            EMOJI="✅"
-          fi
-          curl -X POST -H 'Content-type: application/json' --data "{
-            \"text\": \"${EMOJI} Android Appium CI/CD finished with status: *$STATUS*\nRepo: $GITHUB_REPOSITORY\nCommit: <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\nAllure Report: https://$GITHUB_REPOSITORY_OWNER.github.io/${{ github.event.repository.name }}\" 
-          }" ${{ secrets.SLACK_WEBHOOK_URL }}
+#name: Mobile Testing With Appium and Allure
+#
+#on:
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
+#
+#env:
+#  APP_PATH: ./src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+#  DEVICE_NAME: Pixel 5
+#
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    continue-on-error: true
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Set up Java
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: 21
+#          distribution: temurin
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 18
+#
+#      - name: Install Appium and Allure
+#        run: |
+#          npm install -g appium@2.0.0 appium-doctor allure-commandline --save-dev
+#          appium driver install uiautomator2
+#
+#      #  Step 1: Boot emulator and keep it alive
+#      - name: Start Android Emulator
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 30
+#          target: google_apis
+#          arch: x86_64
+#          force-avd-creation: true
+#          disable-animations: false  # ← CHANGED: Let the script handle animations
+#          emulator-boot-timeout: 900
+#          emulator-options: -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -no-window
+#          script: |
+#            # Wait for emulator to be fully ready
+#            sleep 15
+#      #            # Manually disable animations with retries
+#      #            for i in $(seq 1 3); do
+#      #              adb shell settings put global window_animation_scale 0.0 && \
+#      #              adb shell settings put global transition_animation_scale 0.0 && \
+#      #              adb shell settings put global animator_duration_scale 0.0 && break
+#      #              sleep 5
+#      #            done
+#      #            echo "Emulator started and will stay alive"
+#
+#      #  Step 2: Run Appium tests while emulator is alive
+#      - name: Run Appium tests
+#        run: |
+#          echo ">>> Installing netcat for port checks..."
+#          sudo apt-get update && sudo apt-get install -y netcat-openbsd
+#
+#          echo ">>> Starting Appium server..."
+#          appium -p 4723 --base-path /wd/hub > appium.log 2>&1 &
+#          APPIUM_PID=$!
+#
+#          echo ">>> Waiting for Appium server..."
+#          TIMEOUT=60
+#          while ! nc -z localhost 4723; do
+#            echo "Appium not ready yet..."
+#            sleep 1
+#            TIMEOUT=$((TIMEOUT - 1))
+#            if [ $TIMEOUT -le 0 ]; then
+#              echo "Appium did not start!"
+#              kill $APPIUM_PID || true
+#              exit 1
+#            fi
+#          done
+#
+#          echo ">>> Appium is ready, checking connected devices..."
+#          adb devices
+#
+#          echo ">>> Running Maven tests..."
+#          mkdir -p allure-results target/surefire-reports
+#
+#          mvn clean test -Dsurefire.suiteXmlFiles=testng.xml || TEST_FAILED=true
+#
+#          echo ">>> Maven tests completed, shutting down Appium..."
+#          kill $APPIUM_PID || true
+#
+#          if [ "$TEST_FAILED" = true ]; then
+#            echo ">>> Tests failed, showing surefire reports..."
+#            ls -R target/surefire-reports || true
+#            exit 1
+#          fi
+#
+#      - name: Upload Allure results as artifact
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: allure-results
+#          path: allure-results
+#
+#      - name: Upload JUnit reports as artifact
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: junit-reports
+#          path: target/surefire-reports
+#
+#  deploy-allure-report:
+#    needs: test
+#    runs-on: ubuntu-latest
+#    if: always()
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Download Allure results
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: allure-results
+#          path: allure-results
+#
+#      - name: Install Allure CLI
+#        run: |
+#          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz
+#          tar -xzf allure-2.27.0.tgz
+#          sudo mv allure-2.27.0 /opt/allure
+#          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
+#
+#      - name: Generate Allure report
+#        run: |
+#          allure generate allure-results --clean -o allure-report
+#
+#      - name: Deploy Allure report to GitHub Pages
+#        uses: peaceiris/actions-gh-pages@v4
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: allure-report
+#          publish_branch: gh-pages
+#          force_orphan: true
+#
+#  notify-slack:
+#    needs: [ test, deploy-allure-report ]
+#    runs-on: ubuntu-latest
+#    if: always()
+#    steps:
+#      - name: Send Slack notification
+#        run: |
+#          STATUS="${{ needs.test.result }}"
+#          EMOJI="❌"
+#          if [ "$STATUS" = "success" ]; then
+#            EMOJI="✅"
+#          fi
+#          curl -X POST -H 'Content-type: application/json' --data "{
+#            \"text\": \"${EMOJI} Android Appium CI/CD finished with status: *$STATUS*\nRepo: $GITHUB_REPOSITORY\nCommit: <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\nAllure Report: https://$GITHUB_REPOSITORY_OWNER.github.io/${{ github.event.repository.name }}\"
+#          }" ${{ secrets.SLACK_WEBHOOK_URL }}
