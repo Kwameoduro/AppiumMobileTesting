@@ -155,6 +155,6 @@ jobs:
           if [ "$STATUS" = "success" ]; then
             EMOJI="✅"
           fi
-          curl -X POST -H 'Content-type: application/json' --data "{
-          "text": "${EMOJI} Android Appium CI/CD finished with status: *$STATUS*\nRepo: $GITHUB_REPOSITORY\nCommit: <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA|$GITHUB_SHA>\nAllure Report: https://$GITHUB_REPOSITORY_OWNER.github.io/$GITHUB_REPOSITORY/allure-report" 
-          }" ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data "{  
+          \"text\": \"${EMOJI} Android Appium CI/CD finished with status: *$STATUS*\nRepo: $GITHUB_REPOSITORY\nCommit: <https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA%7C$GITHUB_SHA>\nAllure Report: https://$GITHUB_REPOSITORY_OWNER.github.io/${{ github.event.repository.name }}/allure-report\" 
+                    }" ${{ secrets.SLACK_WEBHOOK_URL }}
