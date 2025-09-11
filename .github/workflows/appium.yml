@@ -54,7 +54,7 @@ jobs:
             sleep 15
 
 
-      # Step 2: Run Appium tests while emulator is alive
+      # Step 2: Run Appium tests while emulator is active
       - name: Run Appium tests
         run: |
           echo ">>> Installing netcat for port checks..."
